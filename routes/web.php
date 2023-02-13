@@ -14,10 +14,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+
 
 Auth::routes(['register' => false]);
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/', 'HomeController@index')->name('home');
+Route::resource('/group','GroupController');
+Route::put('user/{user}/remove_from_group','GroupController@removeFromGroup')->name('remove_from_group');
+Route::resource('user','UserController');
+Route::resource('building','BuildingController');

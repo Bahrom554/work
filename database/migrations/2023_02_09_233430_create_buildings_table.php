@@ -17,7 +17,11 @@ class CreateBuildingsTable extends Migration
             $table->id();
             $table->string('name');
             $table->unsignedBigInteger('customer_id');
+            $table->unsignedBigInteger('group_id')->nullable();
             $table->unsignedInteger('floor');
+            $table->unsignedFloat('cost')->nullable();
+            $table->unsignedInteger('badge')->default(0);
+            $table->boolean('status')->default(0);
             $table->timestamps();
         });
     }

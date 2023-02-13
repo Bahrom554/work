@@ -143,17 +143,17 @@
 
 
 .bg-gradient-purple {
-	background-image: linear-gradient(-310deg,#7928ca,#ff0080);
+	background-image: linear-gradient(310deg,#7928ca,#ff0080);
 }
 
 
 .bg-gradient-success {
-	background-image: linear-gradient( -310deg,#17ad37,#98ec2d);
+	background-image: linear-gradient( 310deg,#17ad37,#98ec2d);
 }
 
 
 .bg-gradient-danger {
-	background: linear-gradient(to left, rgb(238, 9, 121), rgb(255, 106, 0));
+	background: linear-gradient(to right, rgb(238, 9, 121), rgb(255, 106, 0));
 }
 
 
@@ -162,17 +162,17 @@
 }
 
 .bg-gradient-warning {
-	background: linear-gradient(to left, rgb(247, 151, 30), rgb(255, 210, 0));
+	background: linear-gradient(to right, rgb(247, 151, 30), rgb(255, 210, 0));
 }
 
 
 .bg-gradient-voilet {
-	background: linear-gradient(to left, rgb(52, 148, 230), rgb(236, 110, 173));
+	background: linear-gradient(to right, rgb(52, 148, 230), rgb(236, 110, 173));
 }
 
 
 .bg-gradient-royal {
-	background-image: linear-gradient(20deg, rgb(43, 88, 118) 0%, rgb(78, 67, 118) 100%);
+	background-image: linear-gradient(-20deg, rgb(43, 88, 118) 0%, rgb(78, 67, 118) 100%);
 }
 
 .bg-gradient-branding {
@@ -320,7 +320,7 @@
     font-size: 1.rem;
     margin-top: -1em;
     margin-bottom: -1em;
-    margin-right: 5px;
+    margin-left: 5px;
 }
 
 .btn-white {
@@ -779,8 +779,8 @@
 .nav-tabs .nav-link {
     margin-bottom: -1px;
     border: 1px solid transparent;
-    border-top-left-radius: .25rem;
     border-top-right-radius: .25rem;
+    border-top-left-radius: .25rem;
     color: #495057;
 }
 

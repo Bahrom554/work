@@ -3,7 +3,7 @@ html.color-header .top-header .navbar .navbar-nav .nav-link {
 }
 
 html.color-header .top-header, html.color-header .top-header .topbar-logo-header {
-    border-left: 1px solid rgb(255 255 255 / 15%);
+    border-right: 1px solid rgb(255 255 255 / 15%);
 }
 
 html.color-header .top-header .topbar-logo-header img {
@@ -102,11 +102,11 @@ html.headercolor8 .top-header .navbar {
 
 html.color-sidebar .sidebar-wrapper{
 	background-color: #171717;
-    border-right: 1px solid rgb(228 228 228 / 0%);
+    border-left: 1px solid rgb(228 228 228 / 0%);
 }
 html.color-sidebar .sidebar-header{
 	background-color: transparent;
-    border-right: 1px solid #e4e4e400;
+    border-left: 1px solid #e4e4e400;
     border-bottom: 1px solid rgb(255 255 255 / 15%);
 	position: absolute;
 }

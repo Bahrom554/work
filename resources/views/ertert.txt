@@ -1,5 +1,5 @@
 
-<!doctype html>
+                      <!doctype html>
 <html lang="en" class="semi-dark">
 
 <head>
@@ -34,10 +34,11 @@
             <div class="card shadow rounded-5 overflow-hidden">
                   <div class="card-body p-4 p-sm-5">
                     <h5 class="card-title">Sign In</h5>
-                    <p class="card-text">See your growth and get consulting support!</p>
+                    <p class="card-text mb-5">See your growth and get consulting support!</p>
                     <form class="form-body" method="POST" action="{{ route('login') }}">
                       @csrf
-                     
+                      <div class="d-grid">
+                      </div>
                       <div class="login-separater text-center mb-4"> <span> SIGN IN WITH EMAIL</span>
                         <hr>
                       </div>
@@ -56,8 +57,13 @@
                               <input type="password" class="form-control radius-30 ps-5" id="inputChoosePassword" placeholder="Enter Password">
                             </div>
                           </div>
-                         
-                          <div class="col-12 mt-5">
+                          <div class="col-6">
+                            <div class="form-check form-switch">
+                              <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" checked="">
+                              <label class="form-check-label" for="flexSwitchCheckChecked">Remember Me</label>
+                            </div>
+                          </div>
+                          <div class="col-12">
                             <div class="d-grid">
                               <button type="submit" class="btn btn-primary radius-30">Sign In</button>
                             </div>

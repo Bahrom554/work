@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateGroupsTable extends Migration
+class CreateApartmentsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,13 @@ class CreateGroupsTable extends Migration
      */
     public function up()
     {
-        Schema::create('groups', function (Blueprint $table) {
+        Schema::create('apartments', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('building_id');
+            $table->integer('floor');
+            $table->integer('apartment_number');
+            $table->unsignedInteger('badge')->default(0);
+            $table->unique(['building_id', 'apartment_number']);
             $table->timestamps();
         });
     }
@@ -26,6 +31,6 @@ class CreateGroupsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('groups');
+        Schema::dropIfExists('apartments');
     }
 }

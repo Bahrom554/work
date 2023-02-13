@@ -14,6 +14,7 @@ class User extends Authenticatable
   
     public const ROLE_MANAGER = 'manager';
     public const ROLE_ADMIN = 'admin';
+    public const ROLE_SUPER_ADMIN='super_admin';
     public const ROLE_USER = 'user';
     
     /**
@@ -22,11 +23,15 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'username', 'password','phone'
+        'name', 'email', 'password','phone','group_id'
     ];
-     
-    
-    /**
+
+    protected  $guard_name = 'web';
+
+    public function group(){
+        return $this->belongsTo(Group::class);
+    }
+     /**
      * The attributes that should be hidden for arrays.
      *
      * @var array

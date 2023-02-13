@@ -27,7 +27,7 @@ html.dark-theme .sidebar-wrapper .sidebar-header {
 html.dark-theme .sidebar-wrapper, 
 html.dark-theme .sidebar-wrapper .sidebar-header {
 
-    border-left: 1px solid rgb(255 255 255 / 12%);
+    border-right: 1px solid rgb(255 255 255 / 12%);
 
 }
 
@@ -48,7 +48,7 @@ html.dark-theme .sidebar-wrapper .metismenu .mm-active>a, html.dark-theme .sideb
     color: #fff;
     text-decoration: none;
     background: rgb(46 57 78);
-    border-right: 4px solid #ffffff;
+    border-left: 4px solid #ffffff;
 }
 
 html.dark-theme .sidebar-wrapper .metismenu a {
@@ -168,7 +168,7 @@ html.dark-theme .select2-container--bootstrap4 .select2-selection--multiple .sel
 	background: #171717
 }
 html.dark-theme .select2-container--bootstrap4 .select2-selection--multiple .select2-selection__rendered .select2-search__field {
-	background: 100% 0;
+	background: 0 0;
 	color: #e6e1e1
 }
 html.dark-theme .select2-container--bootstrap4 .select2-dropdown .select2-results__option[aria-selected=true] {
@@ -346,12 +346,12 @@ html.dark-theme .border {
 
 html.dark-theme .border-start {
     
-    border-right: 1px solid rgb(255 255 255 / 12%) !important;
+    border-left: 1px solid rgb(255 255 255 / 12%) !important;
 } 
 
 html.dark-theme .border-end {
 
-    border-left: 1px solid rgb(255 255 255 / 12%) !important;
+    border-right: 1px solid rgb(255 255 255 / 12%) !important;
 
 }
 
@@ -481,7 +481,7 @@ html.dark-theme .top-header .navbar .dropdown-user-setting .dropdown-menu::after
 
     background: #202a40;
     border-top: 1px solid #2f3b55;
-    border-right: 1px solid #2f3b55;
+    border-left: 1px solid #2f3b55;
 
 }
 
@@ -579,12 +579,12 @@ html.dark-theme .email-wrapper {
 }
 html.dark-theme .email-sidebar {
 	background-color: #202a40;
-	border-left: 1px solid rgb(255 255 255 / .12)
+	border-right: 1px solid rgb(255 255 255 / .12)
 }
 html.dark-theme .email-sidebar-header {
 	background-color: #202a40;
 	border-bottom: 1px solid rgb(255 255 255 / .12);
-	border-left: 0 solid rgb(255 255 255 / 12%)
+	border-right: 0 solid rgb(255 255 255 / 12%)
 }
 html.dark-theme .email-navigation {
 	border-bottom: 1px solid rgb(255 255 255 / 13%)
@@ -653,12 +653,12 @@ html.dark-theme .chat-wrapper {
 }
 html.dark-theme .chat-sidebar {
 	background-color: #202a40;
-	border-left: 1px solid rgb(255 255 255 / 13%)
+	border-right: 1px solid rgb(255 255 255 / 13%)
 }
 html.dark-theme .chat-sidebar-header {
 	background-color: #202a40;
 	border-bottom: 1px solid rgb(255 255 255 / 13%);
-	border-left: 0 solid rgb(255 255 255 / 13%)
+	border-right: 0 solid rgb(255 255 255 / 13%)
 }
 html.dark-theme .chat-header {
 	background-color: #202a40;
@@ -733,7 +733,7 @@ html.dark-theme .breadcrumb-item.active {
 	color: #8b969f
 }
 html.dark-theme .breadcrumb-title {
-	border-left: 1.5px solid rgb(255 255 255 / 18%)
+	border-right: 1.5px solid rgb(255 255 255 / 18%)
 }
 
 html.dark-theme .bg-body {

@@ -10,7 +10,7 @@ html.semi-dark .sidebar-wrapper .sidebar-header {
 html.semi-dark .sidebar-wrapper, 
 html.semi-dark .sidebar-wrapper .sidebar-header {
 
-    border-left: 1px solid #1a2232;
+    border-right: 1px solid #1a2232;
 
 }
 
@@ -36,7 +36,7 @@ html.semi-dark .sidebar-wrapper .metismenu .mm-active>a, html.semi-dark .sidebar
     color: #fff;
     text-decoration: none;
     background: rgb(46 57 78);
-    border-right: 4px solid #ffffff;
+    border-left: 4px solid #ffffff;
 }
 
 html.semi-dark .sidebar-wrapper .metismenu a {

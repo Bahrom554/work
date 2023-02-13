@@ -7,7 +7,7 @@ html.light-theme .sidebar-wrapper .metismenu a:hover {
     color: #3461ff;
     text-decoration: none;
     background-color: rgb(52 97 255 / 10%);
-    border-right: 4px solid #3461ff;
+    border-left: 4px solid #3461ff;
     box-shadow: none;
 }
 

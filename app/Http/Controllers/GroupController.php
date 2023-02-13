@@ -2,11 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Group;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class GroupController extends Controller
 {
+    public function __construct()
+    {
+        
+    }
     /**
      * Display a listing of the resource.
      *
@@ -14,28 +21,41 @@ class GroupController extends Controller
      */
     public function index()
     {
-        //
+        $query = QueryBuilder::for(Group::class);
+        $query->allowedIncludes(['users','buildings']);
+        $query->orderBy('id', 'DESC');
+        $groups = $query->paginate(30);
+        return view('manager.group.index',compact('groups'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+    public function create(){
+        
+        $users=User::whereNull('group_id')->role(User::ROLE_USER)->get();
+        return view('manager.group.create',compact('users'));
     }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+   
     public function store(Request $request)
     {
-        //
+        
+        $request->validate([
+            'name'=>'required|string|max:255'
+        ]);
+        try{
+            $group=Group::create($request->only('name'));
+            if($request->filled('users')){
+                $users=User::whereIn('id',$request->users)->get();
+                foreach($users as $user){
+                    $user->group_id=$group->id;
+                    $user->save();
+                }
+            }
+            DB::commit();
+
+        } catch (\Exception $e){
+            DB::rollBack();
+            return redirect()->back()->with('error',$e->getMessage());
+        }
+        return redirect(route('group.index'))->with('message', 'created successfully');
     }
 
     /**
@@ -44,9 +64,11 @@ class GroupController extends Controller
      * @param  \App\Models\Group  $group
      * @return \Illuminate\Http\Response
      */
-    public function show(Group $group)
+    public function show($id)
     {
-        //
+        $group=Group::where('id',$id)->with(['users','buildings'])->firstOrFail();
+        $users=User::whereNull('group_id')->role(User::ROLE_USER)->get();
+        return view('manager.group.show',compact('group','users'));
     }
 
     /**
@@ -57,7 +79,7 @@ class GroupController extends Controller
      */
     public function edit(Group $group)
     {
-        //
+        
     }
 
     /**
@@ -69,7 +91,19 @@ class GroupController extends Controller
      */
     public function update(Request $request, Group $group)
     {
-        //
+         if($request->filled('users')){
+            $users=User::whereIn('id',$request->users)->get();
+            foreach($users as $user){
+                $user->group_id=$group->id;
+                $user->save();
+            }
+            return redirect()->back();
+        }
+        $request->validate([
+            'name'=>'required|string|max:255' 
+         ]);
+        $group->update($request->only('name'));
+        return redirect()->back();
     }
 
     /**
@@ -80,6 +114,16 @@ class GroupController extends Controller
      */
     public function destroy(Group $group)
     {
-        //
+        $group->delete();
+        return redirect()->back();
+    }
+
+    public function removeFromGroup(Request $request ,User $user){
+        if(!$user->group_id==$request->group_id){
+            return redirect()->back();
+        }
+        $user->update(['group_id'=>null]);
+        return redirect()->back()->with('message','member is removed!');
+
     }
 }

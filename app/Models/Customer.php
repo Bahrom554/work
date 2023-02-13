@@ -6,5 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Customer extends Model
 {
-    //
+    protected $fillable = ['name'];
+
+    public function buildings()
+    {
+        return $this->hasMany(Building::class);
+    }
 }
