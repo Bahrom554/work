@@ -19,7 +19,7 @@ class BuildingController extends Controller
     public function index()
     {
         $query = QueryBuilder::for(Building::class);
-        $query->allowedIncludes(['group']);
+        $query->allowedIncludes(['group','customer']);
         $query->orderBy('id', 'DESC');
         $buildings = $query->paginate(30);
         return view('manager.building.index',compact('buildings'));
@@ -49,8 +49,8 @@ class BuildingController extends Controller
             'name'=>'required|string|max:255',
             'customer'=>'required|string',
             'floor'=>'required|integer',
-            'cost'=>'nullable|float',
-            'group_id'=>'sometimes|integer|exists:groups,id'
+            'cost'=>'nullable',
+            'group_id'=>'nullable|integer|exists:groups,id'
         ]);
         try{
             $building=Building::make($request->only('name','floor','cost','group_id'));
@@ -63,7 +63,7 @@ class BuildingController extends Controller
             DB::rollBack();
             return redirect()->back()->with('error',$e->getMessage());
         }
-        return redirect(route('building.index'))->with('message', 'created successfully');;
+        return redirect(route('building.index'))->with('message', 'created successfully');
        
     }
 
@@ -75,7 +75,7 @@ class BuildingController extends Controller
      */
     public function show($id)
     {
-        $building=Building::where('id',$id)->with('rooms')->get();
+        $building=Building::where('id',$id)->with('apartments','group')->firstOrFail();
         return view('manager.building.show',compact('building'));
     }
 
@@ -85,8 +85,8 @@ class BuildingController extends Controller
      * @param  \App\Building  $building
      * @return \Illuminate\Http\Response
      */
-    public function edit(Building $building)
-    { 
+    public function edit($id)
+    {    $building=Building::where('id',$id)->with('group','customer')->firstOrFail();
         $groups=Group::all();
         $customers=Customer::all();
         return view('manager.building.edit',compact('groups','customers','building'));
@@ -102,14 +102,26 @@ class BuildingController extends Controller
      */
     public function update(Request $request, Building $building)
     {
+        
         $request->validate([
             'name'=>'required|string|max:255',
-            'customer_id'=>'required|integer',
+            'customer'=>'required|string',
             'floor'=>'required|integer',
-            'cost'=>'nullable|float',
-            'group_id'=>'sometimes|integer|exists:groups,id'
+            'cost'=>'nullable',
+            'group_id'=>'nullable|integer|exists:groups,id'
         ]);
-        $building->update($request->only('name','floor','cost','group_id','customer_id'));
+        try{
+            $customer = Customer::firstOrCreate(array('name' => $request->customer));
+            $request['customer_id']=$customer->id;
+           $building->update($request->only('name','floor','cost','group_id'));
+           DB::commit();
+        }
+        catch(\Exception $e){
+            DB::rollBack();
+            return redirect()->back()->with('error',$e->getMessage());
+        }
+      
+        return redirect(route('building.index'))->with('message', 'created successfully');
     }
 
     /**

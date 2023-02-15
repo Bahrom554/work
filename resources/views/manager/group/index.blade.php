@@ -12,20 +12,20 @@
                 <table id="example" class="table table-striped table-bordered" style="width:100%; ">
                     <thead>
                         <tr>
-                            <th>NO</th>
+                            <th class="d-none d-md-table-cell">NO</th>
                             <th>Name</th>
-                            <th>Members</th>
-                            <th>Buildings</th>
+                            <th class="d-none d-md-table-cell">Members</th>
+                            <th class="d-none d-md-table-cell">Buildings</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach($groups as $group)
                         <tr>
-                            <td>{{ $group->id}}</td>
+                            <td class="d-none d-md-table-cell">{{ $group->id}}</td>
                             <td class="text-truncate">{{$group->name}}</td>
-                            <td class="text-truncate">{{$group->users->count()}}</td>
-                            <td class="text-truncate">{{$group->buildings->count()}}</td>
+                            <td class="text-truncate d-none d-md-table-cell">{{$group->users->count()}}</td>
+                            <td class="text-truncate d-none d-md-table-cell">{{$group->buildings->count()}}</td>
                             <td>
                                  <div
                                     class="  table-actions d-flex align-items-center justify-content-evenly gap-3 fs-4">
@@ -51,10 +51,10 @@
                     </tbody>
                     <tfoot>
                         <tr>
-                            <th>NO</th>
+                            <th class="d-none d-md-table-cell" >NO</th>
                             <th>Name</th>
-                            <th>Members</th>
-                            <th>Buildings</th>
+                            <th class="d-none d-md-table-cell">Members</th>
+                            <th class="d-none d-md-table-cell">Buildings</th>
                             <th>Action</th>
                         </tr>
                     </tfoot>

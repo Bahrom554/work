@@ -19,7 +19,9 @@ use Illuminate\Support\Facades\Route;
 Auth::routes(['register' => false]);
 
 Route::get('/', 'HomeController@index')->name('home');
+Route::resource('users','UserController');
 Route::resource('/group','GroupController');
 Route::put('user/{user}/remove_from_group','GroupController@removeFromGroup')->name('remove_from_group');
 Route::resource('user','UserController');
 Route::resource('building','BuildingController');
+Route::get('customer/{customer}','CustomerController@show')->name('customer.show');

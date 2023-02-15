@@ -14,7 +14,7 @@
     <!--navigation-->
     <ul class="metismenu" id="menu">
         <li>
-            <a href="">
+            <a href="{{ route('building.index') }}">
                 <div class="parent-icon"><i class="bi bi-building"></i>
                 </div>
                 <div class="menu-title">Building</div>
