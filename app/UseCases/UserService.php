@@ -3,6 +3,7 @@
 namespace App\UseCases;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class UserService
@@ -21,12 +22,24 @@ class UserService
 
     public function create($request)
     {
-        $user = User::make($request->only('name', 'email'));
+        DB::beginTransaction();
+        try {
+        $user = User::make($request->only('name', 'email','team_id','phone'));
         if($request->has('password')){
             $user->password = bcrypt($request->password);
         }
-        
-        $user->save();
+         $user->save();
+         if ($request->filled('role')) {
+            $user->syncRoles($request->role);
+            if ($user->hasRole(User::ROLE_ADMIN)) {
+                $user->removeRole(User::ROLE_ADMIN);
+            }
+        }
+        DB::commit();
+    } catch (\Exception $e) {
+        DB::rollBack();
+        return redirect()->back()->withErrors( $e->getMessage());
+    }
         return $user;
     }
 
@@ -36,6 +49,8 @@ class UserService
         $user->update($request->only([
             'name',
             'username',
+            'team_id',
+            'phone'
         ]));
         return $user;
 

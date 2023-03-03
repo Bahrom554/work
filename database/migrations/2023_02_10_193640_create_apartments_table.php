@@ -19,6 +19,8 @@ class CreateApartmentsTable extends Migration
             $table->integer('floor');
             $table->integer('apartment_number');
             $table->unsignedInteger('badge')->default(0);
+            $table->boolean('status')->default(1);
+            $table->unsignedBigInteger('total')->default(0);
             $table->unique(['building_id', 'apartment_number']);
             $table->timestamps();
         });

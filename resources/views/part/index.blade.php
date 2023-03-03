@@ -3,12 +3,11 @@
     <div  class=" mt-2 row">
         <div class=" col-md-8 mx-auto card ">
             @include('layouts.message')
+            @include('layouts.error')
             <div class="offset-md-4 col-md-8 ">
                 <div class="row">
-
-
-                    <div class=" text-right">
-                        <a type="button"  href="{{route('user.create')}}" class="btn btn-primary px-5 ">Create</a>
+                <div class=" text-right">
+                        <a type="button"   href="#addModal"  data-toggle="modal" class="btn btn-primary px-5 ">Create</a>
                     </div>
                 </div>
 
@@ -20,25 +19,23 @@
                         <tr>
                             <th>NO</th>
                             <th>Name</th>
-                            <th>Phone</th>
-                            <th>Team</th>
+                            <th>Type</th>
                             <th>Edit</th>
                             <th>Delete</th>
 
                         </tr>
                         </thead>
                         <tbody>
-                        @foreach($users as $user)
+                        @foreach($parts as $part)
                             <tr>
-                                <td>{{ $user->id}}</td>
-                                <td class="text-truncate">{{$user->name}}</td>
-                                <td>{{$user->phone}}</td>
-                                <td><a href="{{ route('team.show',$user->team->id ?? '')}}">{{ $user->team->name ?? '' }}</a></td>
-                                <td class="text-center"> <a href="{{route('user.edit',$user->id)}}" class="text-warning"
+                                <td>{{ $part->id}}</td>
+                                <td class="text-truncate">{{$part->name}}</td>
+                                <td>{{$part->type}}</td>
+                                <td class="text-center"> <a href="{{route('part.edit',$part->id)}}" class="text-warning"
                                                             title="Edit"><i class="bi bi-pencil-fill"></i></a></td>
                                 <td class="text-center">
 
-                                    <form method="POST" action="{{route('user.destroy',$user->id)}}">
+                                    <form method="POST" action="{{route('part.destroy',$part->id)}}">
                                         @method('delete')
                                         @csrf
                                         <a href="#" style="color: red;" onclick="
@@ -57,8 +54,7 @@
                         <tr>
                             <th>NO</th>
                             <th>Name</th>
-                            <th>Phone</th>
-                            <th>Team</th>
+                            <th>Type</th>
                             <th>Edit</th>
                             <th>Delete</th>
                         </tr>
@@ -68,7 +64,37 @@
             </div>
         </div>
     </div>
-@endsection
+    <div class="modal fade" id="addModal" tabindex="-1" >
+        <div class="modal-dialog">
+            <form role="form" id="editform" action="{{route('part.store')}}"   method="POST">
+                {{csrf_field()}}
+          <div class="modal-content">
+            <div class="d-flex justify-content-between px-3" style="border-bottom:1px solid #e5e5e5;">
+                <h3 class="text-uppercase text-truncate">Create Part</h3>
+                <button type="button" class="close" data-dismiss="modal" >
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+           <div class="modal-body row">
+               <div class=" form-group col-md-6">
+                  <label>name</label>
+                  <input type="text" name="name" class="form-control"  required>
+              </div>
+              <div class=" form-group col-md-6">
+                <label>type</label>
+                <input type="text" name="type" class="form-control" >
+            </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-primary">Create</button>
+            </div>
+          </div>
+            </form>
+        </div>
+      </div>
+    </div>
+    @endsection
 @section('jscontent')
 
     <script>

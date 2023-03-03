@@ -2,58 +2,62 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Group;
+use App\Models\Team;
 use App\Models\Building;
 use App\Models\Customer;
+use App\Models\Apartment;
 use Illuminate\Http\Request;
+use App\Exports\BuildingExport;
+use App\Exports\ApartmentExport;
+use App\UseCases\BuildingService;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class BuildingController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    protected $service;
+    public function __construct(BuildingService $service)
+    {   
+        $this->service=$service;
+        $this->middleware(['role:admin|manager'], ['except' => [
+            'index','show'
+        ]]);
+    }
+    
     public function index()
     {
+        
         $query = QueryBuilder::for(Building::class);
-        $query->allowedIncludes(['group','customer']);
+        $query->allowedIncludes(['customer']);
         $query->orderBy('id', 'DESC');
         $buildings = $query->paginate(30);
-        return view('manager.building.index',compact('buildings'));
+        return view('building.index',compact('buildings'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+   
     public function create()
     {
-        $groups=Group::all();
+        $teams=Team::all();
         $customers=Customer::all();
-        return view('manager.building.create',compact('groups','customers'));
+        return view('building.create',compact('teams','customers'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+   
     public function store(Request $request)
     {
         $request->validate([
             'name'=>'required|string|max:255',
             'customer'=>'required|string',
-            'floor'=>'required|integer',
-            'cost'=>'nullable',
-            'group_id'=>'nullable|integer|exists:groups,id'
+            'floor'=>'required|integer|min:1',
+            'cost'=>'nullable|integer|min:0',
+            'teams'=>'required|array',
+            'teams.*'=>'required|integer|exists:teams,id'
         ]);
+        DB::beginTransaction();
         try{
-            $building=Building::make($request->only('name','floor','cost','group_id'));
+            $building=Building::make($request->only('name','floor','cost','teams'));
             $customer = Customer::firstOrCreate(array('name' => $request->customer));
             $building->customer_id=$customer->id;
             $building->save();
@@ -61,22 +65,18 @@ class BuildingController extends Controller
         }
         catch(\Exception $e){
             DB::rollBack();
-            return redirect()->back()->with('error',$e->getMessage());
+            return redirect()->back()->withErrors($e->getMessage());
         }
         return redirect(route('building.index'))->with('message', 'created successfully');
        
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Building  $building
-     * @return \Illuminate\Http\Response
-     */
+   
     public function show($id)
     {
-        $building=Building::where('id',$id)->with('apartments','group')->firstOrFail();
-        return view('manager.building.show',compact('building'));
+        $building=Building::where('id',$id)->with('apartments')->firstOrFail();
+        
+        return view('building.show',compact('building'));
     }
 
     /**
@@ -86,20 +86,14 @@ class BuildingController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
-    {    $building=Building::where('id',$id)->with('group','customer')->firstOrFail();
-        $groups=Group::all();
+    {    $building=Building::where('id',$id)->with('customer')->firstOrFail();
+        $teams=Team::all();
         $customers=Customer::all();
-        return view('manager.building.edit',compact('groups','customers','building'));
+        return view('building.edit',compact('teams','customers','building'));
         
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Building  $building
-     * @return \Illuminate\Http\Response
-     */
+    
     public function update(Request $request, Building $building)
     {
         
@@ -108,32 +102,33 @@ class BuildingController extends Controller
             'customer'=>'required|string',
             'floor'=>'required|integer',
             'cost'=>'nullable',
-            'group_id'=>'nullable|integer|exists:groups,id'
+            'teams'=>'required|array',
+            'teams.*'=>'required|integer|exists:teams,id'
         ]);
         try{
             $customer = Customer::firstOrCreate(array('name' => $request->customer));
             $request['customer_id']=$customer->id;
-           $building->update($request->only('name','floor','cost','group_id'));
+           $building->update($request->only('name','floor','cost','teams','customer_id'));
            DB::commit();
         }
         catch(\Exception $e){
             DB::rollBack();
-            return redirect()->back()->with('error',$e->getMessage());
+            return redirect()->back()->withErrors($e->getMessage());
         }
       
         return redirect(route('building.index'))->with('message', 'created successfully');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Building  $building
-     * @return \Illuminate\Http\Response
-     */
+    
     public function destroy(Building $building)
     {
         $building->delete();
         return redirect()->back()->with('message','deleted');
+    }
+
+    public function report(Request $request, Building $building){
+        
+        return Excel::download(new ApartmentExport($request,$building->id), $building->name.'.xlsx');
     }
 
    

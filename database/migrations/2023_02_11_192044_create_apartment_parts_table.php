@@ -18,7 +18,7 @@ class CreateApartmentPartsTable extends Migration
             $table->unsignedBigInteger('apartment_id');
             $table->unsignedBigInteger('part_id');
             $table->unsignedFloat('area');
-            $table->json('user_id')->nullable();
+            $table->json('users')->nullable();
             $table->boolean('status')->default(0);
             $table->foreign('apartment_id')->references('id')->on('apartments')->onDelete('cascade');
             $table->foreign('part_id')->references('id')->on('parts')->onDelete('cascade');

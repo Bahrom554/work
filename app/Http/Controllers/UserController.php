@@ -2,12 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\UserCreateRequest;
-use App\Http\Requests\UserEditRequest;
+use App\Models\Team;
 use App\Models\User;
+use App\Exports\UsersExport;
+use Illuminate\Http\Request;
 use App\UseCases\UserService;
 use Illuminate\Auth\Access\Gate;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Http\Requests\UserEditRequest;
+use App\Http\Requests\UserCreateRequest;
 
 class UserController extends Controller
 {
@@ -16,6 +20,7 @@ class UserController extends Controller
     public function __construct(UserService $service)
     {
         $this->service=$service;
+        $this->middleware(['role:admin|manager']);
         
     }
     public function index(Request $request)
@@ -25,7 +30,8 @@ class UserController extends Controller
     }
 
     public function create(){
-        return view('users.create');
+        $teams=Team::all();
+        return view('users.create',compact('teams'));
     }
 
 
@@ -33,11 +39,13 @@ class UserController extends Controller
     {
         $user=$this->service->create($request);
 
-        return redirect(route('users.index'));
+        return redirect(route('user.index'))->with('message','created');
     }
 
     public function edit(User $user){
-        return view('users.edit',compact('user'));
+        $teams=Team::all();
+        
+           return view('users.edit',compact('user','teams'));
     }
     public function update(UserEditRequest $request, User $user)
     {
@@ -48,16 +56,23 @@ class UserController extends Controller
             $this->service->resetPassword($request, $user->id);
         }
         $this->service->edit($user->id,$request);
-        return redirect(route('users.index'));
+        return redirect(route('user.index'))->with('message','updated Successfully');
 
     }
 
+  
+
     public function destroy(User $user)
     {
-        if(!$user->isAdmin()){
+        if(!$user->hasRole(User::ROLE_ADMIN)){
             $this->service->remove($user->id);
         }
         return redirect()->back();
+    }
+
+    public function export() 
+    {
+        return Excel::download(new UsersExport, 'users.xlsx');
     }
 
 

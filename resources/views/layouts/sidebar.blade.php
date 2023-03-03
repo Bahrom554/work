@@ -20,29 +20,29 @@
                 <div class="menu-title">Building</div>
             </a>
         </li>
+        @hasanyrole('manager|admin')
         <li>
-            <a href="{{ route('group.index') }}">
+            <a href="{{ route('team.index') }}">
                 <div class="parent-icon"><i class="bi bi-people"></i>
                 </div>
-                <div class="menu-title">Group</div>
+                <div class="menu-title">Team</div>
             </a>
         </li>
         <li>
-            <a href="">
+            <a href="{{ route('user.index') }}">
                 <div class="parent-icon"><i class="bi bi-person"></i>
                 </div>
                 <div class="menu-title">User</div>
             </a>
         </li>
-        @can('admin')
-            <li>
-                <a href="">
-                    <div class="parent-icon"><i class="bi bi-car-front"></i>
-                    </div>
-                    <div class="menu-title">Xisobot</div>
-                </a>
-            </li>
-        @endcan
+        <li>
+            <a href="{{ route('part.index') }}">
+                <div class="parent-icon"><i class="bi bi-pie-chart-fill"></i>
+                </div>
+                <div class="menu-title">Part</div>
+            </a>
+        </li>
+        @endhasanyrole
     </ul>
     <!--end navigation-->
 </aside>

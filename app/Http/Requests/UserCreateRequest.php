@@ -12,7 +12,9 @@ class UserCreateRequest extends FormRequest
         return [
             'name'=>'required|string|max:255',
             'email'=>'required|email|unique:users',
-            'password'=>'required|string|min:6',
+            'password'=>'required|string|confirmed|min:6',
+            'group_id'=>'nullable|integer|exists:groups,id',
+            'phone'=>'nullable|string'
         ];
     }
 }

@@ -1,12 +1,12 @@
 @extends('layouts.app')
 @section('content')
     @include('layouts.error')
-<form method="POST" action="{{route('group.store')}}">
+<form method="POST" action="{{route('team.store')}}">
     @csrf
     <div class="row">
-        <div style="font-size: 40px" class="col-3"><a href="{{route('group.index')}}"><i
+        <div style="font-size: 40px" class="col-3"><a href="{{route('team.index')}}"><i
                     class="bi bi-chevron-left"></i></a></div>
-        <h2 class="col col-6" style="text-align: center">Add Group</h2>
+        <h2 class="col col-6" style="text-align: center">Add Team</h2>
         <div class="card border border-1 p-4 mt-4 offset-md-3 col-md-6">
             <div class="card-body">
                 <div class="mb-3">

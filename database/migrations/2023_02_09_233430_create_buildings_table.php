@@ -17,7 +17,7 @@ class CreateBuildingsTable extends Migration
             $table->id();
             $table->string('name');
             $table->unsignedBigInteger('customer_id');
-            $table->unsignedBigInteger('group_id')->nullable();
+            $table->json('teams')->nullable();
             $table->unsignedInteger('floor');
             $table->unsignedFloat('cost')->nullable();
             $table->unsignedInteger('badge')->default(0);

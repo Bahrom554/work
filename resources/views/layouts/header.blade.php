@@ -3,10 +3,7 @@
         <div class="mobile-toggle-icon fs-3">
             <i class="bi bi-list"></i>
         </div>
-           <h2 class="my-2  text-uppercase">
-           
-
-            </h2>
+           @yield('navbar')
         <div class="top-navbar-right ms-auto">
             <ul class="navbar-nav align-items-center">
                 <li class="nav-item search-toggle-icon">
@@ -29,8 +26,8 @@
                                     <img src="{{asset('admin/images/avatars/avatar-1.png')}}" alt=""
                                         class="rounded-circle" width="54" height="54">
                                     <div class="ms-3">
-                                        <h6 class="mb-0 dropdown-user-name">Jhon Deo</h6>
-                                        <small class="mb-0 dropdown-user-designation text-secondary">HR Manager</small>
+                                        <h6 class="mb-0 dropdown-user-name">{{$profile->name}}</h6>
+                                        <small class="mb-0 dropdown-user-designation text-secondary">{{ $profile->roles[0]->name ?? ''  }}</small>
                                     </div>
                                 </div>
                             </a>
@@ -40,8 +37,7 @@
                         </li>
                         <li>
                             <a class="dropdown-item" href="
-                            {{-- {{route('users.edit',\Illuminate\Support\Facades\Auth::id())}} --}}
-                            ">
+                            {{route('profile.edit')}}">
                                 <div class="d-flex align-items-center">
                                     <div class=""><i class="bi bi-person-fill"></i></div>
                                     <div class="ms-3"><span>Edit Profile</span></div>

@@ -33,11 +33,10 @@
                     <input type="number" class="form-control" name="cost" value="{{ old('cost') ?? $building->cost }}">
                 </div>
                 <div class="mb-2">
-                    <label class="form-label" style="font-size:22px;">Groups</label>
-                    <select type="text" name="group_id" class="form-control" >
-                        <option value=Null><option>
-                        @foreach($groups as $group)
-                            <option value="{{$group->id}}" @if($building->group->id==$group->id) selected @endif>{{$group->name}}</option>
+                    <label class="form-label" style="font-size:22px;">Teams</label>
+                    <select class="multiple-select" name="teams[]" data-placeholder="Choose anything" multiple="multiple">
+                        @foreach($teams as $team)
+                            <option value="{{$team->id}}" @if($building->teams && in_array($team->id,$building->teams )) selected @endif>{{$team->name}}</option>
                         @endforeach
                     </select>
                 </div>

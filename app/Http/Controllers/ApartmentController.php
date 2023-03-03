@@ -2,11 +2,23 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Part;
+use App\Models\User;
 use App\Models\Apartment;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\UseCases\ApartmentService ;
 
 class ApartmentController extends Controller
 {
+    
+    private $service;
+
+    public function __construct(ApartmentService $service)
+    {
+        $this->service=$service;
+        
+    }
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +26,7 @@ class ApartmentController extends Controller
      */
     public function index()
     {
-        //
+       
     }
 
     /**
@@ -22,9 +34,9 @@ class ApartmentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        
     }
 
     /**
@@ -35,7 +47,22 @@ class ApartmentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'floor'=>'required|integer',
+            'apartment_number'=>'required|integer',
+            'building_id'=>'required|integer|exists:buildings,id'
+        ]);
+        try{
+            $apartment=Apartment::make($request->only('floor','apartment_number','building_id'));
+            $apartment->save();
+            DB::commit();
+        }
+        catch(\Exception $e){
+            DB::rollBack();
+            return redirect()->back()->withErrors($e->getMessage());
+            
+        }
+        return redirect()->back()->with('message', 'created successfully');
     }
 
     /**
@@ -44,9 +71,16 @@ class ApartmentController extends Controller
      * @param  \App\Models\Apartment  $apartment
      * @return \Illuminate\Http\Response
      */
-    public function show(Apartment $apartment)
-    {
-        //
+    public function show($id)
+    {    
+        $result = DB::table('apartment_parts')->where('apartment_id',$id)->selectRaw('sum(area) as total')->first();
+        
+        $apartment=Apartment::where('id',$id)->with('building','parts')->firstOrFail();
+        $apartment->total=$result->total;
+        $apartment->save();
+        $users=User::whereIn('team_id',$apartment->building->teams ?? [])->get();
+        $parts=Part::all();
+        return view('apartment.show',compact('apartment','users','parts'));
     }
 
     /**

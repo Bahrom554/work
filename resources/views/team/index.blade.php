@@ -4,8 +4,8 @@
     <div class="card ">
         @include('layouts.message')
         <div class="d-flex align-items-center justify-content-between px-3">
-            <h2 class="mb-2 text-uppercase ">Group List</h2>
-            <a type="button" href="{{route('group.create')}}" class="btn btn-primary px-5 ">Add Group</a>
+            <h2 class="mb-2 text-uppercase ">Team List</h2>
+            <a type="button" href="{{route('team.create')}}" class="btn btn-primary px-5 ">Add Team</a>
         </div>
         <div class="card-body">
             <div class="table-responsive" id="for_search">
@@ -20,21 +20,21 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($groups as $group)
+                        @foreach($teams as $team)
                         <tr>
-                            <td class="d-none d-md-table-cell">{{ $group->id}}</td>
-                            <td class="text-truncate">{{$group->name}}</td>
-                            <td class="text-truncate d-none d-md-table-cell">{{$group->users->count()}}</td>
-                            <td class="text-truncate d-none d-md-table-cell">{{$group->buildings->count()}}</td>
+                            <td class="d-none d-md-table-cell">{{ $team->id}}</td>
+                            <td class="text-truncate">{{$team->name}}</td>
+                            <td class="text-truncate d-none d-md-table-cell">{{$team->users->count()}}</td>
+                            <td class="text-truncate d-none d-md-table-cell">{{$team->buildings->count()}}</td>
                             <td>
                                  <div
                                     class="  table-actions d-flex align-items-center justify-content-evenly gap-3 fs-4">
-                                    <a href="{{route('group.show',$group->id)}}" class="text-warning"
+                                    <a href="{{route('team.show',$team->id)}}" class="text-warning"
                                         title="show"><i class="bi bi-eye-fill"></i></i></a>
-                                    <form method="POST" action="{{route('group.destroy',$group->id)}}">
+                                    <form method="POST" action="{{route('team.destroy',$team->id)}}">
                                         @method('delete')
                                         @csrf
-                                        <input name="url" hidden value="{{$groups->currentPage()}}">
+                                        <input name="url" hidden value="{{$teams->currentPage()}}">
                                         <a href="#" style="color: red;" onclick="
                                      if(confirm('Are sure,You want delete this?')){
                                             event.preventDefault();
@@ -61,7 +61,7 @@
                 </table>
             </div>
             <div class="d-flex align-items-center justify-content-end">
-                {{ $groups->links() }}
+                {{ $teams->links() }}
             </div>
         </div>
     </div>

@@ -45,21 +45,32 @@
                           <div class="col-12">
                             <label for="inputEmailAddress" class="form-label">Email Address</label>
                             <div class="ms-auto position-relative">
-                              <div class="position-absolute top-50 translate-middle-y search-icon px-3"><i class="bi bi-envelope-fill"></i></div>
-                              <input type="email" class="form-control radius-30 ps-5" id="inputEmailAddress" placeholder="Email Address">
+                              <input type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" required autofocus  placeholder="Email Address">
+                              @if ($errors->has('email'))
+                              <span class="invalid-feedback" role="alert">
+                                  <strong>{{ $errors->first('email') }}</strong>
+                              </span>
+                          @endif
                             </div>
                           </div>
                           <div class="col-12">
                             <label for="inputChoosePassword" class="form-label">Enter Password</label>
                             <div class="ms-auto position-relative">
-                              <div class="position-absolute top-50 translate-middle-y search-icon px-3"><i class="bi bi-lock-fill"></i></div>
-                              <input type="password" class="form-control radius-30 ps-5" id="inputChoosePassword" placeholder="Enter Password">
+                              <input type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" required  id="inputChoosePassword" placeholder="Enter Password">
+                              <i class="bi bi-eye-fill" id="iconcadur" style=" position: absolute; z-index: 100; top:50%; right: 30px; transform: translateY(-50%);   cursor: pointer;"></i>
+                              @if ($errors->has('password'))
+                              <span class="invalid-feedback" role="alert">
+                                  <strong>{{ $errors->first('password') }}</strong>
+                              </span>
+                          @endif
                             </div>
                           </div>
                          
                           <div class="col-12 mt-5">
                             <div class="d-grid">
-                              <button type="submit" class="btn btn-primary radius-30">Sign In</button>
+                              <button type="submit" class="btn btn-primary px-5 ml-auto d-block">
+                                {{ __('Login') }}
+                            </button>
                             </div>
                           </div>
                         </div>
@@ -81,7 +92,18 @@
 
 
 </body>
+<script>
+  const togglePassword = document.querySelector('#iconcadur');
+  const password = document.querySelector('#inputChoosePassword');
 
+  togglePassword.addEventListener('click', function (e) {
+      // toggle the type attribute
+      const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+      password.setAttribute('type', type);
+      // toggle the eye slash icon
+      togglePassword.classList.toggle('bi-eye-slash-fill');
+  });
+</script>
 </html>
                            
                         

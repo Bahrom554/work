@@ -25,18 +25,17 @@
                 </div>
                 <div class="mb-3">
                     <label class="form-label" style="font-size:22px;">Floor</label>
-                    <input type="number" class="form-control" name="floor" required>
+                    <input type="number" class="form-control" name="floor"min=1 required>
                 </div>
                 <div class="mb-3">
                     <label class="form-label" style="font-size:22px;">Cost</label>
-                    <input type="number" class="form-control" name="cost" placeholder="name">
+                    <input type="number" class="form-control" name="cost" min=0 placeholder="name">
                 </div>
                 <div class="mb-2">
-                    <label class="form-label" style="font-size:22px;">Groups</label>
-                    <select type="text" name="group_id" class="form-control" >
-                        <option value=Null><option>
-                        @foreach($groups as $group)
-                            <option value="{{$group->id}}">{{$group->name}}</option>
+                    <label class="form-label" style="font-size:22px;">Teams</label>
+                    <select class="multiple-select" name="teams[]" data-placeholder="Choose anything" multiple="multiple">
+                        @foreach($teams as $team)
+                        <option value="{{$team->id}}">{{$team->name}}</option>
                         @endforeach
                     </select>
                 </div>

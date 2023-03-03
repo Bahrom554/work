@@ -2,8 +2,11 @@
 
 namespace App\Models;
 
+use Illuminate\Support\Facades\Auth;
+
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
@@ -23,13 +26,13 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password','phone','group_id'
+        'name', 'email', 'password','phone','team_id'
     ];
 
     protected  $guard_name = 'web';
-
-    public function group(){
-        return $this->belongsTo(Group::class);
+    protected $with=['roles'];
+    public function team(){
+        return $this->belongsTo(Team::class);
     }
      /**
      * The attributes that should be hidden for arrays.
@@ -48,4 +51,6 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+   
+   
 }

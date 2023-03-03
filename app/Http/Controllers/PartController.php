@@ -2,84 +2,77 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\PartCreateRequest;
+use App\Http\Requests\PartEditRequest;
 use App\Models\Part;
+use App\UseCases\PartService;
+use Dotenv\Result\Error;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class PartController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    private $service;
+
+    public function __construct(PartService $service)
+    {
+        $this->service=$service;
+        
+    }
     public function index()
     {
-        //
+        $parts=Part::all();
+        return view('part.index',compact('parts'));
     }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+   
+    public function store(PartCreateRequest $request)
     {
-        //
+        try{
+            $this->service->create($request);
+        }catch(\Exception $e){
+            return redirect()->back()->withErrors($e->getMessage());
+        }
+     
+     return redirect()->back()->with('message','created ');
+       
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Part  $part
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Part $part)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Part  $part
-     * @return \Illuminate\Http\Response
-     */
+   
     public function edit(Part $part)
     {
-        //
+        return view('part.edit',compact('part'));
+        
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Part  $part
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Part $part)
+   
+    public function update(PartEditRequest $request, Part $part)
     {
-        //
+        try{
+            $this->service->edit($request,$part);
+        }catch(\Exception $e){
+            return redirect()->back()->withErrors($e->getMessage());
+        }
+        return redirect(route('part.index'))->with('message','updated ');
+       
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Part  $part
-     * @return \Illuminate\Http\Response
-     */
+   
     public function destroy(Part $part)
     {
-        //
+        try{
+            $this->service->destroy($part);
+        }catch(\Exception $e){
+            return redirect()->back()->withErrors($e->getMessage());
+        }
+        return redirect()->back()->with('message','deleted');
+    }
+    public function createPivot(Request $request){
+        try{
+            $this->service->createWithPivot($request);
+        }catch(\Exception $e){
+            return redirect()->back()->withErrors($e->getMessage());
+           
+        }
+        return redirect()->back()->with('message','deleted'); 
     }
 }

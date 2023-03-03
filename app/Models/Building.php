@@ -2,22 +2,31 @@
 
 namespace App\Models;
 
+use App\Models\Team;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 
 class Building extends Model
 {
-    protected $fillable =['name','customer_id','floor','cost','badge','group_id','status'];
-
+    protected $fillable =['name','customer_id','floor','cost','badge','teams','status'];
+    protected $casts=[
+        'teams'=>'array'
+    ];
+    protected $appends=['team'];
+    
     public function customer(){
         return $this->belongsTo(Customer::class);
     }
 
     public function apartments(){
-       return $this->hasMany(Apartment::class);
+       return $this->hasMany(Apartment::class)->orderBy('floor','ASC');
     }
 
-    public function group(){
-        return $this->belongsTo(Group::class);
+    public function getTeamAttribute(){
+        return Team::whereIn('id',$this->teams)->get();
     }
 
     public function success(){
@@ -28,6 +37,16 @@ class Building extends Model
      public function badge(){
         $this->badge+=1;
      }
+
+     protected static function booted()
+     {
+         static::addGlobalScope('inprogress', function (Builder $builder) {
+             if(!Auth::user()->hasAnyRole([User::ROLE_ADMIN, User::ROLE_MANAGER])){
+                 $builder->whereJsonContains('teams',(string)Auth::user()->team_id);
+             }
+         });
+     }
+
 
 
    

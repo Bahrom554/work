@@ -6,9 +6,9 @@
         @include('layouts.message')
        
         <div class="d-flex align-items-center justify-content-between ">
-            <a href="{{route('group.index')}}" style="font-size:30px" class="d-block pr-4 "><i
+            <a href="{{route('team.index')}}" style="font-size:30px" class="d-block pr-4 "><i
                 class="bi bi-chevron-left"></i></a>
-            <h2 class="text-uppercase text-truncate ml-4 ">{{ $group->name }}</h2>
+            <h2 class="text-uppercase text-truncate ml-4 ">{{ $team->name }}</h2>
            <div class="d-none d-md-flex">
             <a type="button" href="#editModal"  data-toggle="modal" class="btn btn-primary px-3 mx-1 ">Edit Name</a>
             <a  type="button" href="#addModal"  data-toggle="modal" class="btn btn-primary px-3 mx-1 ">Add Member</a>
@@ -21,20 +21,20 @@
          <!-- Modal -->
   <div class="modal fade" id="editModal" tabindex="-1" >
     <div class="modal-dialog">
-        <form role="form" id="editform" action="{{route('group.update',$group)}}"   method="POST">
+        <form role="form" id="editform" action="{{route('team.update',$team)}}"   method="POST">
             {{csrf_field()}}
             {{method_field('PUT')}}
       <div class="modal-content">
         <div class="d-flex justify-content-between px-3" style="border-bottom:1px solid #e5e5e5;">
-            <h3 class="text-uppercase text-truncate">{{ $group->name }}</h3>
+            <h3 class="text-uppercase text-truncate">{{ $team->name }}</h3>
             <button type="button" class="close" data-dismiss="modal" >
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
        <div class="modal-body">
-            <div class=" form-group">
+            <div class=" form-team">
                 <label>Create new name</label>
-                <input type="text" name="name" class="form-control" value="{{old('name',$group->name) }}" required>
+                <input type="text" name="name" class="form-control" value="{{old('name',$team->name) }}" required>
             </div>
         </div>
         <div class="modal-footer">
@@ -47,18 +47,18 @@
   </div>
   <div class="modal fade" id="addModal" tabindex="-1" >
     <div class="modal-dialog">
-        <form role="form" id="editform" action="{{route('group.update',$group)}}"   method="POST">
+        <form role="form" id="editform" action="{{route('team.update',$team)}}"   method="POST">
             {{csrf_field()}}
             {{method_field('PUT')}}
       <div class="modal-content">
         <div class="d-flex justify-content-between px-3" style="border-bottom:1px solid #e5e5e5;">
-            <h3 class="text-uppercase text-truncate">{{ $group->name }}</h3>
+            <h3 class="text-uppercase text-truncate">{{ $team->name }}</h3>
             <button type="button" class="close" data-dismiss="modal" >
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
        <div class="modal-body">
-            <div class=" form-group">
+            <div class=" form-team">
                
                 <label class="form-label" style="font-size:22px;">Add members</label>
                     <select class="multiple-select" name="users[]" data-placeholder="Choose anything" multiple="multiple">
@@ -95,22 +95,22 @@
                                             <th>NO</th>
                                             <th>Name</th>
                                             <th >phone</th>
-                                            <th>Delete from group</th>
+                                            <th>Delete from team</th>
                                         </tr>
                                         </thead>
                                         <tbody id="table_body">
-                                         @foreach ($group->users as $user )
+                                         @foreach ($team->users as $user )
                                             <tr> 
                                           <td>{{ $loop->index}}</td>
-                                          <td><a href="{{ route('user.show',$user) }}">{{ $user->name }}</a></td>
+                                          <td>{{ $user->name }}</td>
                                          <td>{{ $user->phone }}</td>
                                               <td class="text-center">
-                                                    <form method="POST" action="{{route('remove_from_group',$user)}}">
-                                                        <input class="d-none" name="group_id" value="{{ $group->id}}">
+                                                    <form method="POST" action="{{route('remove_from_team',$user)}}">
+                                                        <input class="d-none" name="team_id" value="{{ $team->id}}">
                                                         @method('PUT')
                                                         @csrf
                                                         <a href="#" style="color: red;" onclick="
-                                     if(confirm('{{$user->name}}  delete from group')){
+                                     if(confirm('{{$user->name}}  delete from team')){
                                             event.preventDefault();
                                             this.closest('form').submit();
                                            }
@@ -129,7 +129,7 @@
                                 </div>
                                 <div class="d-flex align-items-center justify-content-between">
                                     <h5 class="mx-3">All:</h5>
-                                    <h5 class="mx-3">{{$group->users->count()}}</h5>
+                                    <h5 class="mx-3">{{$team->users->count()}}</h5>
                                 </div>
                             </div>
                         </div>
@@ -157,7 +157,7 @@
                                         </tr>
                                         </thead>
                                         <tbody id="table_body">
-                                        @foreach($group->buildings as $building)
+                                        @foreach($team->buildings as $building)
                                             <tr id="tr">
                                                 <td>{{$loop->index}}</td>
                                                 <td ><a href="{{ route('building.show',$building) }}">{{ $building->name }}</a></td>

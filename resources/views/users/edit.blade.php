@@ -1,11 +1,11 @@
 @extends('layouts.app')
 @section('content')
     @include('layouts.error')
-    <form method="POST" action="{{route('users.update',$user)}}">
+    <form method="POST" action="{{route('user.update',$user)}}">
         @method('PUT')
         @csrf
         <div class="row">
-            <div style="font-size: 40px" class="col-3"><a href="{{route('users.index')}}"><i
+            <div style="font-size: 40px" class="col-3"><a href="{{route('user.index')}}"><i
                         class="bi bi-chevron-left"></i></a></div>
             <h2 class="col col-6" style="text-align: center">Edit User</h2>
             <div class="card border border-1 p-4 mt-4 offset-md-3 col-md-6">
@@ -14,6 +14,21 @@
                         <label class="form-label" style="font-size:22px;">Name</label>
                         <input type="text" class="form-control" name="name" placeholder="name" value="{{old('name', $user->name)}} " autofocus required>
                     </div>
+                    <div class="mb-3">
+                        <label class="form-label" style="font-size:22px;">Phone</label>
+                        <input type="text" class="form-control" name="phone" placeholder="phone" value="{{old('phone', $user->phone)}} "  required>
+                    </div>
+                  
+                  <div class="mb-2">
+                    <label class="form-label" style="font-size:22px;">Teams</label>
+                    <select type="text" name="team_id" class="form-control" >
+                        <option value=Null><option>
+                        @foreach($teams as $team)
+                            <option value="{{$team->id}}" @if($user->team_id==$team->id) selected @endif>{{$team->name}}</option>
+                        @endforeach
+                    </select>
+                </div>
+                 
                     <div class="mb-3">
                         <label class="form-label" style="font-size:22px;">Email</label>
                         <input type="text" class="form-control" name="email" placeholder="name" value="{{old('email', $user->email)}} " required>

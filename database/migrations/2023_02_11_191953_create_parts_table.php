@@ -16,8 +16,8 @@ class CreatePartsTable extends Migration
         Schema::create('parts', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('category');
             $table->string('type')->nullable();
+            $table->unique(['name','type']);
             $table->timestamps();
         });
     }
