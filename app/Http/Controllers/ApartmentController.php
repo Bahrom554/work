@@ -76,7 +76,7 @@ class ApartmentController extends Controller
         $result = DB::table('apartment_parts')->where('apartment_id',$id)->selectRaw('sum(area) as total')->first();
         
         $apartment=Apartment::where('id',$id)->with('building','parts')->firstOrFail();
-        $apartment->total=$result->total;
+        $apartment->total=$result->total ?? 0;
         $apartment->save();
         $users=User::whereIn('team_id',$apartment->building->teams ?? [])->get();
         $parts=Part::all();
